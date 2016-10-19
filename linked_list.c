@@ -44,14 +44,14 @@ main()
     printf("当前链表的长度：%d\n", list_length(pHead));
 
 	//插入新节点
-	insert_node(pHead, 5, 999);
+	insert_node(pHead, 1, 999);
 	printf("------------------新插入节点后的变化-----------------\n");
 	printf("新插入的节点是999，位置是1\n");
 	traverse_list(pHead);
 	printf("当前链表的长度：%d\n", list_length(pHead));
 
 	//删除链表节点
-	int hasDel = delete_node(pHead, 5);
+	int hasDel = delete_node(pHead, 2);
 	printf("------------------删除节点后的变化-----------------\n");
 	printf("删除的节点是%d，位置是2\n", hasDel);
 	traverse_list(pHead);
