@@ -21,6 +21,16 @@ int list_length(PNODE pHead);
 int delete_node(PNODE pHead, int pos);
 //插入新节点
 bool insert_node(PNODE pHead, int pos, int val);
+//链表向前移动一位
+void left_shift_one(PNODE pHead);
+//链表向前移动pos位
+void left_rotate_string(PNODE pHead, int pos);
+//翻转链表
+void reverse_string(PNODE pHead, int from, int to);
+//在某个位置翻转链表
+void rotate_string(PNODE pHead, int pos);
+//根据位置获取节点
+PNODE get_node_by_pos(PNODE pHead, int pos);
 
 
 main()
@@ -33,29 +43,41 @@ main()
     //打印链表
     traverse_list(pHead);
 
-    //判断链表是否为空
-    if (is_empty(pHead)) {
-        printf("当前链表为空!\n");
-    } else {
-        printf("当前链表不为空!\n");
-    }
-
     //判断链表长度
-    printf("当前链表的长度：%d\n", list_length(pHead));
+    printf("链表创建成功，长度为：%d\n\n", list_length(pHead));
+
+    //翻转链表（暴力翻转）
+    int start;
+    printf("请输入从第几位开始翻转链表:");
+    scanf("%d", &start);
+    printf("------------------从第%d位置开始翻转链表后的变化-----------------\n", start);
+	rotate_string(pHead, start);
+    traverse_list(pHead);
+	printf("当前链表的长度：%d\n\n", list_length(pHead));
+
 
 	//插入新节点
-	insert_node(pHead, 1, 999);
+	int pos,val;
+	printf("请输入新插入节点位置：");
+	scanf("%d", &pos);
+	printf("请输入新节点数值：");
+	scanf("%d", &val);
 	printf("------------------新插入节点后的变化-----------------\n");
-	printf("新插入的节点是999，位置是1\n");
+	insert_node(pHead, pos, val);
+	printf("新插入的节点是%d，位置是%d\n", val, pos);
 	traverse_list(pHead);
-	printf("当前链表的长度：%d\n", list_length(pHead));
+	printf("当前链表的长度：%d\n\n", list_length(pHead));
 
 	//删除链表节点
-	int hasDel = delete_node(pHead, 2);
+	int delPos;
+	printf("请输入删除节点的位置：");
+	scanf("%d", &delPos);
+	int hasDel = delete_node(pHead, delPos);
 	printf("------------------删除节点后的变化-----------------\n");
-	printf("删除的节点是%d，位置是2\n", hasDel);
+	printf("删除的节点是%d，位置是%d\n", hasDel, delPos);
 	traverse_list(pHead);
-	printf("当前链表的长度：%d\n", list_length(pHead));
+	printf("当前链表的长度：%d\n\n", list_length(pHead));
+
 
 }
 
@@ -171,4 +193,52 @@ int delete_node(PNODE pHead, int pos)
 	p->pNext = nextNode->pNext;
 	free(nextNode);
 	return val;
+}
+
+//翻转链表
+void reverse_string(PNODE pHead, int from, int to)
+{
+    int t;
+    PNODE pFrom,pTo;
+    pFrom = get_node_by_pos(pHead, from);
+    pTo = get_node_by_pos(pHead, to);
+
+    while(from<to){
+        t=pFrom->data;
+        pFrom->data=pTo->data;
+        pTo->data = t;
+        pFrom = pFrom->pNext;
+        pTo = get_node_by_pos(pHead, to-1); //单向拿不到上一个节点,只能通过循环找出来
+        from++;
+        to--;
+    }
+}
+
+//根据位置找出节点
+PNODE get_node_by_pos(PNODE pHead, int pos)
+{
+    int i = 0;
+    PNODE p = pHead->pNext;
+
+    while(p!=NULL && i<pos){
+        p = p->pNext;
+        ++i;
+    }
+    return p;
+}
+
+//链表翻转。给出一个链表和一个数k，比如，链表为1→2→3→4→5→6，k=2，则翻转后2→1→6→5→4→3
+void rotate_string(PNODE pHead, int pos)
+{
+    int n;
+    int len = list_length(pHead);
+
+    pos %= len;
+    reverse_string(pHead, 0, pos-1);
+
+    //traverse_list(pHead);exit(-1);
+    if(pos<len){
+        reverse_string(pHead,pos,len-1);
+    }
+
 }
