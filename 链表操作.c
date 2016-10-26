@@ -31,6 +31,8 @@ void reverse_string(PNODE pHead, int from, int to);
 void rotate_string(PNODE pHead, int pos);
 //根据位置获取节点
 PNODE get_node_by_pos(PNODE pHead, int pos);
+//是否为回文链表
+bool is_palindrome(PNODE pHead);
 
 
 main()
@@ -44,7 +46,14 @@ main()
     traverse_list(pHead);
 
     //判断链表长度
-    printf("链表创建成功，长度为：%d\n\n", list_length(pHead));
+    printf("链表创建成功，长度为：%d\n", list_length(pHead));
+
+    //回文链表判断
+	if (is_palindrome(pHead)) {
+        printf("这是一个回文链表\n\n");
+	} else {
+        printf("这不是一个回文链表\n\n");
+	}
 
     //翻转链表（暴力翻转）
     int start;
@@ -53,8 +62,7 @@ main()
     printf("------------------从第%d位置开始翻转链表后的变化-----------------\n", start);
 	rotate_string(pHead, start);
     traverse_list(pHead);
-	printf("当前链表的长度：%d\n\n", list_length(pHead));
-
+	printf("当前链表的长度：%d\n", list_length(pHead));
 
 	//插入新节点
 	int pos,val;
@@ -77,7 +85,6 @@ main()
 	printf("删除的节点是%d，位置是%d\n", hasDel, delPos);
 	traverse_list(pHead);
 	printf("当前链表的长度：%d\n\n", list_length(pHead));
-
 
 }
 
@@ -212,6 +219,30 @@ void reverse_string(PNODE pHead, int from, int to)
         from++;
         to--;
     }
+}
+
+//是否为回文链表
+bool is_palindrome(PNODE pHead)
+{
+    int front = 0;
+    int back = list_length(pHead) - 1;
+    PNODE pFront, pBack;
+
+    pFront = get_node_by_pos(pHead, front);
+    pBack = get_node_by_pos(pHead, back);
+
+    while(front<back)
+    {
+        if (pFront->data != pBack->data) {
+            return false;
+        }
+
+        pFront = pFront->pNext;
+        pBack = get_node_by_pos(pHead, back - 1); //单向拿不到上一个节点,只能通过循环找出来
+        front++;
+        back--;
+    }
+    return true;
 }
 
 //根据位置找出节点
