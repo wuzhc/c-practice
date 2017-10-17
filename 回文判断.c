@@ -1,38 +1,35 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-bool IsPalindrome(const char * s);
+bool isPalindrome(char * s);
 
-main()
+int main()
 {
-    char s[] = "asdfdsa";
-    if (IsPalindrome(s)) {
+    char s[] = "asd1fdsa";
+    if (isPalindrome(s)) {
         printf("yes");
     } else {
         printf("no");
     }
+
+    return 0;
 }
 
-bool IsPalindrome(const char * s)
+bool isPalindrome(char * s)
 {
-    if (s == NULL) {
+    if (NULL == s) {
         return false;
     }
 
-    const char * front, * back;
-
-    //初始化头指针和未指针
+    char * front, * rear;
     front = s;
-    back = strlen(s) + s - 1;
-
-    while (front < back)
-    {
-        if (*front != *back) {
+    rear = strlen(s) + s - 1;
+    while (front < rear) {
+        if (*front != *rear) {
             return false;
         }
         front++;
-        back--;
+        rear--;
     }
-
     return true;
 }

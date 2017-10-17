@@ -1,51 +1,71 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<errno.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <time.h>
 
-#define MAXLINE 4096
+int score = 0;
 
-int main(int argc, char** argv)
+void error(char *msg)
 {
-    int    listenfd, connfd;
-    struct sockaddr_in     servaddr;
-    char    buff[4096];
-    int     n;
+    fprintf(stderr, "%s : %s \n", msg, strerror(errno));
+    exit(1);
+}
 
-    if( (listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ){
-    printf("create socket error: %s(errno: %d)\n",strerror(errno),errno);
+void game_over(int sig)
+{
+    printf("Game Over\n");
+    printf("Your score is %i \n", score);
     exit(0);
+}
+
+void time_out(int sig)
+{
+    printf("Time Up \n");
+    raise(SIGINT); /* 自己引发结束信号，让程序调用game_over */
+}
+
+int catch_signal(int sig, void (*handle)(int))
+{
+    struct sigaction action;
+    action.sa_handler = handle;
+    sigemptyset(&action.sa_mask); /* 用掩码过滤sigaction要处理的信号，通常会用一个空掩码 */
+    action.sa_flags = 0; /* 附加标志位 */
+    return sigaction(sig, &action, NULL);
+}
+
+int main(int argc, char *argv[])
+{
+    int answer;
+    int a, b;
+
+    /* 需要捕获sigint信号 */
+    if (catch_signal(SIGINT, game_over) == -1) {
+        error("catch signal failed");
     }
 
-    memset(&servaddr, 0, sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(6666);
-
-    if( bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) == -1){
-    printf("bind socket error: %s(errno: %d)\n",strerror(errno),errno);
-    exit(0);
+    /* 捕获5秒结束信号 */
+    if (catch_signal(SIGALRM, time_out) == -1) {
+        error("catch signal failed");
     }
 
-    if( listen(listenfd, 10) == -1){
-    printf("listen socket error: %s(errno: %d)\n",strerror(errno),errno);
-    exit(0);
+    srandom(time(0));
+    while (1)
+    {
+        a = random() % 11;
+        b = random() % 11;
+
+        alarm(5); /* 每道题定时时间为5秒 */
+        printf("What is %i * %i = ? \n", a, b);
+
+        scanf("%i", &answer);
+        if (answer == a * b) {
+            score++;
+        } else {
+            printf("Wrong! Score: %i\n", score);
+        }
     }
 
-    printf("======waiting for client's request======\n");
-    while(1){
-    if( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL)) == -1){
-        printf("accept socket error: %s(errno: %d)",strerror(errno),errno);
-        continue;
-    }
-    n = recv(connfd, buff, MAXLINE, 0);
-    buff[n] = '\0';
-    printf("recv msg from client: %s\n", buff);
-    close(connfd);
-    }
-
-    close(listenfd);
+    return 0;
 }
