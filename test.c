@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <signal.h>
 #include <stdlib.h>
 #include <time.h>
-
-int score = 0;
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 void error(char *msg)
 {
@@ -13,58 +12,57 @@ void error(char *msg)
     exit(1);
 }
 
-void game_over(int sig)
-{
-    printf("Game Over\n");
-    printf("Your score is %i \n", score);
-    exit(0);
-}
-
-void time_out(int sig)
-{
-    printf("Time Up \n");
-    raise(SIGINT); /* ×Ô¼ºÒı·¢½áÊøĞÅºÅ£¬ÈÃ³ÌĞòµ÷ÓÃgame_over */
-}
-
-int catch_signal(int sig, void (*handle)(int))
-{
-    struct sigaction action;
-    action.sa_handler = handle;
-    sigemptyset(&action.sa_mask); /* ÓÃÑÚÂë¹ıÂËsigactionÒª´¦ÀíµÄĞÅºÅ£¬Í¨³£»áÓÃÒ»¸ö¿ÕÑÚÂë */
-    action.sa_flags = 0; /* ¸½¼Ó±êÖ¾Î» */
-    return sigaction(sig, &action, NULL);
-}
 
 int main(int argc, char *argv[])
 {
-    int answer;
-    int a, b;
+    char *reply[] = {
+        "one\r\n",
+        "two\r\n",
+        "three\r\n",
+        "four\r\n"
+    };
 
-    /* ĞèÒª²¶»ñsigintĞÅºÅ */
-    if (catch_signal(SIGINT, game_over) == -1) {
-        error("catch signal failed");
+    /* åˆ›å»ºå¥—æ¥å­— */
+    int listener_d = socket(PF_INET, SOCK_STREAM, 0);
+    if (listener_d == -1) {
+        error("create sock stream failed");
     }
 
-    /* ²¶»ñ5Ãë½áÊøĞÅºÅ */
-    if (catch_signal(SIGALRM, time_out) == -1) {
-        error("catch signal failed");
+    /* ç»‘å®š30000ç«¯å£ */
+    struct sockaddr_in name;
+    name.sin_family = PF_INET;
+    name.sin_port = (in_port_t)htons(30000);
+    name.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+    /* è®¾ç½®å¯ä»¥é‡æ–°ä½¿ç”¨ç«¯å£ */
+    int reuse = 1;
+    if (setsockopt(listener_d, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(int)) == -1) {
+        error("can not set the reuse option on the socket");
+    }
+    if (bind(listener_d, (struct sockaddr *)&name, sizeof(name)) == -1) {
+        error("bind port failed");
     }
 
-    srandom(time(0));
-    while (1)
-    {
-        a = random() % 11;
-        b = random() % 11;
+    /* ç›‘å¬ç«¯å£ */
+    if (listen(listener_d, 2) == -1) {
+        error("listen port failed");
+    }
 
-        alarm(5); /* Ã¿µÀÌâ¶¨Ê±Ê±¼äÎª5Ãë */
-        printf("What is %i * %i = ? \n", a, b);
+    puts("waiting for connection");
 
-        scanf("%i", &answer);
-        if (answer == a * b) {
-            score++;
-        } else {
-            printf("Wrong! Score: %i\n", score);
+    /* æ¥å—è¿æ¥ */
+    while (1) {
+        struct sockaddr_storage client_addr;
+        unsigned int address_size = sizeof(client_addr);
+        int connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
+        if (connect_d == -1) {
+            error("accept client failed");
         }
+
+        char *msg = reply[rand() % 4];
+        /* å‘é€æ¶ˆæ¯åˆ°å®¢æˆ·ç«¯ */
+        send(connect_d, msg, strlen(msg), 0);
+        close(connect_d);
     }
 
     return 0;
