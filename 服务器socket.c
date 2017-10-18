@@ -2,10 +2,10 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <sys/types.h>
 
 int listener_d; /* 套接字 */
 void error(char *);
@@ -51,11 +51,18 @@ int main(int argc, char *argv[])
             error("accept client failed");
         }
 
-        char *msg = reply[rand() % 4];
-        say(connect_d, msg);
-        read_in(connect_d, buf, sizeof(buf));
-        printf("from client : %s \n", buf);
-        close(connect_d);
+        /* fork子进程，由子进程处理accept创建的副套接字符 */
+        if (!fork()) {
+            close(listener_d); /* 子进程不需要这个，可以关闭 */
+            char *msg = reply[rand() % 4];
+            say(connect_d, msg);
+            read_in(connect_d, buf, sizeof(buf));
+            printf("from client : %s \n", buf);
+            close(connect_d);
+            exit(0); /* 通信结束之后，子进程退出程序*/
+        }
+
+        close(connect_d); /* 创建子进程后，关闭connect_d */
     }
 
     return 0;
