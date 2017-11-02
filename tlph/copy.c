@@ -15,7 +15,7 @@ int main (int argc, char **argv)
 
 
 	/* 参数检测 */
-	if (argc != 3 || strcmp(argv[1], "--help")) {
+	if (argc != 3 || strcmp(argv[1], "--help") == 0) {
 		usageErr("%s old-filename new-filename \n", argv[0]);
 	}
 
