@@ -8,7 +8,7 @@
 #include <sys/types.h>
 
 int listener_d; /* 套接字 */
-void error(char *);
+void error_exit(char *);
 void handle_shutdown(int);
 int catch_signal(int, void (*handle)(int));
 int open_listener_socket();
@@ -23,18 +23,18 @@ int main(int argc, char *argv[])
         "one\r\n",
         "two\r\n",
         "three\r\n",
-        "four\r\n"
+        "four\r\n"0
     };
 
     /* 安装信号捕捉 */
     if (catch_signal(SIGINT, handle_shutdown) == -1) {
-        error("Set signal failed");
+        error_exit("Set signal failed");
     }
 
     /* 创建套接字 */
     listener_d = open_listener_socket();
     if (listener_d == -1) {
-        error("create sock stream failed");
+        error_exit("create sock stream failed");
     }
 
     bind_to_port(listener_d, 30000);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     while (1) {
         int connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
         if (connect_d == -1) {
-            error("accept client failed");
+            error_exit("accept client failed");
         }
 
         /* fork子进程，由子进程处理accept创建的副套接字符 */
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void error(char *msg)
+void error_exit(char *msg)
 {
     fprintf(stderr, "%s : %s \n", msg, strerror(errno));
     exit(1);
@@ -112,14 +112,14 @@ void bind_to_port(int listener_d, int port)
         printf("Can not set the reuse option on the socket\n");
     }
     if (bind(listener_d, (struct sockaddr *)&name, sizeof(name)) == -1) {
-        error("Can not bind port");
+        error_exit("Can not bind port");
     }
 }
 
 void listen_to_port(int listener_d, int num)
 {
     if (listen(listener_d, num) == -1) {
-        error("Listen port failed");
+        error_exit("Listen port failed");
     }
 }
 
