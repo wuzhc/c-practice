@@ -26,12 +26,12 @@ int main (int argc, char **argv)
 
 	openFlags = O_WRONLY | O_CREAT | O_TRUNC;
 	filePerms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
-	outputFd = open(argv[2], openFlags, fileParams); /* open 失败返回-1 */
+	outputFd = open(argv[2], openFlags, filePerms); /* open 失败返回-1 */
 	if (outputFd == -1) {
 		errExit("open file %s \n", argv[2]);
 	}
 
-	while ((numRead = read(inputFd, buf, BUF_SIZE) > 0) { /* read 返回读取字节数，失败是返回-1 */
+	while ((numRead = read(inputFd, buf, BUF_SIZE)) > 0) { /* read 返回读取字节数，失败是返回-1 */
 		if (write(outputFd, buf, numRead) != numRead) { /* write 返回写入的字节数 */
 			fatal("could't write whole buffer");
 		}
