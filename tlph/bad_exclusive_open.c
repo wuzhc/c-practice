@@ -4,8 +4,8 @@
 
 int main(int argc, char **argv)
 {
-	int fd;
-	if (argc < 2 || strcmp(argv[1], '--help') == 0) {
+	int fd, flags, accessMode;
+	if (argc < 2 || strcmp(argv[1], "--help") == 0) {
 		usageErr("%s file \n", argv[1]);
 	}
 
@@ -27,6 +27,30 @@ int main(int argc, char **argv)
 		} else {
 			 printf("[PID %ld] Created file \"%s\" exclusively\n",
                     (long) getpid(), argv[1]);          /* MAY NOT BE TRUE! */
+		}
+
+		/* 更改文件的状态标志 */
+		flags = fcntl(fd, F_GETFL); /* 获取当前标志副本 */
+		flags |= O_RDONLY;
+		if (fcntl(fd, F_SETFL, flags) == -1) { /* fcntl失败返回-1 */
+			errExit("fcntl");
+		}
+
+		flags = fcntl(fd, F_GETFL);
+		if (flags == -1) {
+			errExit("fcntl");
+		}
+		/* 判断文件是否以同步写方式打开 */
+		if (flags & O_SYNC) {
+			printf("write is sync \n");
+		}
+		/* 判断文件的访问模式 */
+		accessMode = flags & O_ACCMODE; /* 先与O_ACCMODE相与 */
+		if (accessMode == O_WRONLY) {
+			printf("%s is writeable\n", argv[1]);
+		}
+		if (accessMode == O_RDONLY) {
+			printf("%s is readable\n", argv[1]);
 		}
 	}
 	return 0;
