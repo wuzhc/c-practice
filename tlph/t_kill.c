@@ -4,7 +4,7 @@
 int main(int argc, char *args[])
 {
 	int sig, res;
-	if (argc != 3 || strcmp(args[1], '--help') == 0) {
+	if (argc != 3 || strcmp(args[1], "--help") == 0) {
 		usageErr("%s pid sig", args[0]);
 	}
 
