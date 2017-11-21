@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	}
 
 	for (callNum = 0, misMatch = 0; ; callNum++) {
-		if (strcmp(crypt(argv[1], "xx"), cr1)) {
+		if (strcmp(crypt(argv[1], "xx"), cr1) != 0) {
 			misMatch++;
 			printf("misMatch on call %d (misMatch=%d handled=%d\n", callNum, misMatch, handle);
 		}
