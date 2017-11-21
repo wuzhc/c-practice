@@ -7,7 +7,7 @@
 static char *str2; /* 保存第二个参数 */
 static int handle = 0; /* 记录中断次数 */
 
-void handle()
+void handler()
 {
 	crypt(str2, "xx"); /* crypt调用之后，字符串的匹配检查之前遭到信号处理器函数的中断，这时会发生字符串不匹配的情况 */
 	handle++;
