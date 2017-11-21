@@ -1,6 +1,4 @@
 #define _XOPEN_SOURCE 600
-#include <string.h>
-#include <unistd.h>
 #include <signal.h>
 #include "tlpi_hdr.h"
 
