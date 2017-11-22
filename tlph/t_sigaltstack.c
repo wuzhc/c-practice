@@ -26,18 +26,18 @@ int main(int argc, char **argv)
 	int j;
 
 	printf("Top of standard stack near %10p\n", &j); /* 标准程序栈顶部 */
-	sigstack.ss_sp = malloc(SIGSTKSZ); /* 备选栈位置 */
-	if (sigstack.ss_sp == NULL) {
-		errExit("malloc failed \n");
-	}
-	sigstack.ss_size = SIGSTKSZ; /* 备选栈大小 */
-	sigstack.ss_flags = 0;
+	// sigstack.ss_sp = malloc(SIGSTKSZ); /* 备选栈位置 */
+	// if (sigstack.ss_sp == NULL) {
+	// 	errExit("malloc failed \n");
+	// }
+	// sigstack.ss_size = SIGSTKSZ; /* 备选栈大小 */
+	// sigstack.ss_flags = 0;
 
 	/* 系统调用sigaltstack创建一个备选信号栈 */
-	if (sigaltstack(&sigstack, NULL) == -1) {
-		errExit("sigaltstack failed \n");
-	}
-	printf("Alternate stack is at %10p - %p \n",sigstack.ss_sp, (char *)sbrk(0) -1);
+	// if (sigaltstack(&sigstack, NULL) == -1) {
+	// 	errExit("sigaltstack failed \n");
+	// }
+	// printf("Alternate stack is at %10p - %p \n",sigstack.ss_sp, (char *)sbrk(0) -1);
 
 	/* 安装信号 */
 	sa.sa_handler = sigsegvHandler;
