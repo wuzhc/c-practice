@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 		usageErr("%s arg1 arg2", argv[0]);
 	}
 	str2 = argv[2];
-	cr1 = strdup(crypt(argv[1], "xx")); /* 使用strdup将结果复制到独立缓冲区 */
+	cr1 = strdup(crypt(argv[1], "xx")); /* 使用strdup将结果复制到独立缓冲区,strdup需要释放内存 */
 	if (cr1 == NULL) {
 		errExit("strdup");
 	}
