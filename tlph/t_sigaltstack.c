@@ -3,7 +3,7 @@
 #include "tlpi_hdr.h"
 
 /* 当内存引用失败时就会发出sigsevg信号,sigsevgHandler是它的处理器函数 */
-void sigsevgHandler(int sig)
+void sigsegvHandler(int sig)
 {
 	int x; /* 保存在栈里的*/
 	printf("caught signal %d (%s)\n", sig, strsignal(sig)); /* printf是不安全函数，不建议在信号处理器使用 */
@@ -40,10 +40,10 @@ int main(int argc, char **argv)
 	printf("Alternate stack is at %10p - %p \n",sigstack.ss_sp, (char *)sbrk(0) -1);
 
 	/* 安装信号 */
-	sa.handler = sigsevgHandler;
-	sigemptyset(&sa.sa_mak);
+	sa.sa_handler = sigsegvHandler;
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_ONSTACK;/* 使用由sigaltstack（）安装的备选栈 */
-	if (sigaction(SIGSEVG, &sa, NULL) == -1) {
+	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
 		errExit("sigaction failed \n");
 	}
 
