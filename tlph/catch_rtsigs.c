@@ -18,7 +18,7 @@ static void siginfoHandler(int sig, siginfo_t *si, void *ucontext)
 	printf("catch signal %d\n", sig);
 	printf("si_signo=%d, si_code=%d (%s) \n", si->si_signo, si->si_code, 
 		(si->si_code == SI_USER) ? "SI_USER" : (si->si_code == SI_QUEUE) ? "SI_QUEUE" : "other");
-	printf("si_value=%d\n", si->si_value->sival_int);
+	printf("si_value=%d\n", si->si_value.sival_int);
 	printf("si_pid=%ld, si_uid=%ld\n", (long)si->si_pid, (long)si->si_uid);
 	sleep(handlerSleepTime);
 }
