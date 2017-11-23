@@ -1,5 +1,5 @@
 #define _GNU_SOURCE
-#include <singal.h>
+#include <signal.h>
 #include "tlpi_hdr.h"
 
 static volatile int allDone = 0;
