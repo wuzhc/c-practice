@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		}
 
 		printf("%s:signals blocked - sleeping %s seconds\n", argv[0], argv[1]);
-		sleep(getInt(argv[1], GN_CT_O, "block-time"));
+		sleep(getInt(argv[1], GN_GT_0, "block-time"));
 		printf("%s: sleep complete\n", argv[0]);
 
 		/* 睡眠之后解除信号阻塞 */

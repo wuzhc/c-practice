@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 
 	sig = getInt(argv[2], 0, "sig-num");
 	sigData = getInt(argv[3], GN_ANY_BASE, "data");
-	sigNums = (argc > 4) ? getInt(argv[4], GN_CT_O, "num-sigs") : 1;
+	sigNums = (argc > 4) ? getInt(argv[4], GN_GT_0, "num-sigs") : 1;
 	for (j = 0; j < sigNums; j++) {
-		sv.sival_int = sigData + j;
+		sv.sival_int = sigData + j; /* 信号的伴随数据 */
 		if (sigqueue(getLong(argv[1], 0, "pid"), sig, sv) == -1) {
 			errExit("sigqueue %d \n", j);
 		}
