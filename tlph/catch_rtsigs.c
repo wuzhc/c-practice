@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
 	if (argc > 1 && strcmp(argv[1], "--help") == 0) {
 		usageErr("%s block-time [handler-sleep-time] \n", argv[0]);
 	}
+	printf("%s: PID is %ld\n", argv[0], (long)getpid);
+
+	/* 信号处理器休眠时间 */
+	handlerSleepTime = (argc > 2) ? getInt(argv[2], GN_NONNEG, "handler-sleep-time") : 1;
 
 	/* 安装信号处理器 */
 	sa.sa_sigaction = siginfoHandler;
