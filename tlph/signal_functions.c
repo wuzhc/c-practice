@@ -6,7 +6,7 @@
 void printSigset(FILE *f, const char *prefix, const sigset_t *sigset)
 {
 	int sig, count = 0;
-	for (sig = 0; sig < NSIG; sig++) { /* NSIG 信号最大编号加1 */
+	for (sig = 1; sig < NSIG; sig++) { /* NSIG 信号最大编号加1 */
 		if (sigismember(sigset, sig)) { /* 测试sig是否为sigset信号集的成员 */
 			fprintf(f, "%s%d (%s)\n", prefix, sig, strsignal(sig));
 			count++;
@@ -14,7 +14,7 @@ void printSigset(FILE *f, const char *prefix, const sigset_t *sigset)
 	}
 
 	if (count == 0)
-		fprintf(f, "%s empty sigset \n", prefix);
+		fprintf(f, "%s <empty sigset> \n", prefix);
 }
 
 /* 显示进程的信号掩码 */
