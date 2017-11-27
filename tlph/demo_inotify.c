@@ -1,7 +1,7 @@
 #include <sys/inotify.h>
 #include <limits.h>
 #include "tlpi_hdr.h"
-#define BUF_LEN = (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
+#define BUF_LEN  (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
 
 void displaylInotifyEvent(struct inotify_event *i)
 {
@@ -24,11 +24,11 @@ void displaylInotifyEvent(struct inotify_event *i)
 	if (i->mask & IN_DELETE)
 		printf("在受控目录内删除文件或目录");
 	if (i->mask & IN_DELETE_SELF)
-		printf("删除受控文件或目录本身")
+		printf("删除受控文件或目录本身");
 	if (i->mask & IN_IGNORED)
 		printf("监控项为内核或应用程序所删除");
 	if (i->mask & IN_ISDIR)
-		printf("name中所返回的文件名为路径")
+		printf("name中所返回的文件名为路径");
 	if (i->mask & IN_MODIFY)
 		printf("文件被修改")
 	if (i->mask & IN_MOVE_SELF)
@@ -40,9 +40,9 @@ void displaylInotifyEvent(struct inotify_event *i)
 	if (i->mask & IN_OPEN)
 		printf("文件被打开");
 	if (i->mask & IN_Q_OVERFLOW)
-		printf("事件队列溢出")
+		printf("事件队列溢出");
 	if (i->mask & IN_UNMOUNT)
-		printf("包含对象的文件系统遭卸载")
+		printf("包含对象的文件系统遭卸载");
 	printf("\n");
 
 	if (i->len > 0) {
