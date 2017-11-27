@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 		printf("watching %s using wd %d\n", argv[1], wd);
 	}
 
-	/* read读取事件 */
+	/* read读取inotify事件 */
 	for (;;) {
 		numRead = read(fd, buf, BUF_LEN);
 		if (numRead == 0) {
@@ -86,6 +86,8 @@ int main(int argc, char *argv[])
 			errExit("read \n");
 		}
 		printf("read %ld bytes from inotify fd\n", (long)numRead);
+
+		/* numRead是一次性读取了值，需要一个个获取inotify_event的值，故需要用到指针运算 */
 		for (p = buf; p < buf + numRead;) {
 			event = (struct inotify_event *)p;
 			displaylInotifyEvent(event);
