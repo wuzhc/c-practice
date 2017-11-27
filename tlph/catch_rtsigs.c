@@ -1,3 +1,4 @@
+/* 结合t_sigqueue.c可以观察实时信号 */
 #define _GNU_SOURCE
 #include <signal.h>
 #include "tlpi_hdr.h"
