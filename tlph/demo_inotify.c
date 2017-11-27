@@ -30,7 +30,7 @@ void displaylInotifyEvent(struct inotify_event *i)
 	if (i->mask & IN_ISDIR)
 		printf("name中所返回的文件名为路径");
 	if (i->mask & IN_MODIFY)
-		printf("文件被修改")
+		printf("文件被修改");
 	if (i->mask & IN_MOVE_SELF)
 		printf("移动受监控文件或目录本身");
 	if (i->mask & IN_MOVED_FROM)
