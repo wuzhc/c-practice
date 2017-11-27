@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 		printf("%s:got signal %d\n", argv[0], fdsi.ssi_signo);
 		if (fdsi.ssi_code == SI_QUEUE) {
 			printf(";ssi_pid = %d", fdsi.ssi_pid);
-			printf("ssi_int = %d", fdsi_ssi_int);
+			printf("ssi_int = %d", fdsi.ssi_int);
 		}
 		printf("\n");
 	}
