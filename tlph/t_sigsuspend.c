@@ -49,7 +49,7 @@ int main(int argc, char *argv)
 		printSigMask(stdout, "starting critical section, signal mask is:\n");
 
 		/* 模拟关键代码的执行 */
-		for (startTime = time(NULL); time(NULL) < startTime + 4) {
+		for (startTime = time(NULL); time(NULL) < startTime + 4;) {
 			continue;
 		}
 		
