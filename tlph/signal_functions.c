@@ -18,7 +18,7 @@ void printSigset(FILE *f, const char *prefix, const sigset_t *sigset)
 }
 
 /* 显示进程的信号掩码 */
-int printMask(FILE *f, const char *msg)
+int printSigMask(FILE *f, const char *msg)
 {
 	sigset_t currMask; /* 当前进程阻塞的信号 */
 	if (msg != NULL) {
