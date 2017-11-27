@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 	}
 
 	for (;;) {
+		/* 调用read时，如果没有信号正在等待，那么read将阻塞，知道信号到达 */
 		s = read(sfd, &fdsi, sizeof(struct signalfd_siginfo));
 		if (s != sizeof(struct signalfd_siginfo)) {
 			errExit("read \n");
