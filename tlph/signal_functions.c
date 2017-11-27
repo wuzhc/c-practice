@@ -20,11 +20,11 @@ void printSigset(FILE *f, const char *prefix, const sigset_t *sigset)
 /* 显示进程的信号掩码 */
 int printMask(FILE *f, const char *msg)
 {
-	sigset currMask; /* 当前进程阻塞的信号 */
+	sigset_t currMask; /* 当前进程阻塞的信号 */
 	if (msg != NULL) {
 		fprintf(f, "%s\n", msg);
 	}
-	if (sigprocmask(SIG_BLOCK, NULL, &currMask) == -1) { /* 将阻塞信号放到了currMask */
+	if (sigprocmask(SIG_BLOCK, NULL, &currMask) == -1) { /* 将阻塞信号放到了currMask,sigprocmask还可以修改进程掩码 */
 		return -1;
 	}
 	printSigset(f, "\t\t", &currMask);
@@ -34,7 +34,7 @@ int printMask(FILE *f, const char *msg)
 /* 当前处于等待的信号集 */
 int printPendingSigs(FILE *f, const char *msg)
 {
-	sigset pendingSigs; 
+	sigset_t pendingSigs; 
 	if (msg != NULL) {
 		fprintf(f, "%s\n", msg);
 	}
