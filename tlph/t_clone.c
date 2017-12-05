@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	const int STACK_SIZE = 65536; /* 栈大小 */
 	char *stack; 
 	char *stackTop;
-	int fd, flags;
+	int s, fd, flags;
 
 	fd = open("/dev/null", O_RDWR);
 	if (fd == -1) {
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* clone先去执行childFunc，return时发送CHILD_SIG给*/
-	if (clone(childFunc, stackTop, flags | CHILD_SIG, (void *)fd) == -1) {
+	if (clone(childFunc, stackTop, flags | CHILD_SIG, (void *)&fd) == -1) {
 		errExit("clone failed \n");
 	}
 
