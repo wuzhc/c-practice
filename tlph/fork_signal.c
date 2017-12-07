@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	/* 创建子进程 */
 	printf("parent pid = %d\n", getpid());
 
-	//setbuf(stdout, NULL);
+	setbuf(stdout, NULL);
 
 	for (i=0; i<5; i++) {
 		switch(pid = fork()){
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 				break;
 			case 0:
 				printf("child pid = %d\n", getpid());
-				//_exit(EXIT_SUCCESS);
+				_exit(EXIT_SUCCESS);
 				break;
 			default:
 				break;
@@ -56,5 +56,5 @@ int main(int argc, char *argv[])
 	}
 
 	printf("%d child process exit\n", total);
-	// exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
