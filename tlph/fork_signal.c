@@ -56,5 +56,5 @@ int main(int argc, char *argv[])
 	}
 
 	printf("%d child process exit\n", total);
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 }
