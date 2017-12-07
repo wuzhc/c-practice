@@ -1,3 +1,4 @@
+#include <wait.h>
 #include <signal.h>
 #include "tlpi_hdr.h"
 
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
 	for (;;) {
 		childPid = wait(NULL);
 		if (childPid == -1) {
-			if (errno == ECHLD) {
+			if (errno == ECHILD) {
 				printf("no more children - bye\n");
 			} else {
 				errExit("wait failed");
