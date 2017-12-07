@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
 	}
 
 	/* 创建子进程 */
-	printf("parent pid = %d\n", getppid());
+	printf("parent pid = %d\n", getpid());
 
-	setbuf(stdout, NULL);
+	//setbuf(stdout, NULL);
 
 	for (i=0; i<5; i++) {
 		switch(pid = fork()){
