@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 				break;
 			case 0:
 				printf("child pid = %d\n", getpid());
-				_exit(EXIT_SUCCESS);
+				//_exit(EXIT_SUCCESS);
 				break;
 			default:
 				break;
