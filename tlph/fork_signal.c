@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* 创建子进程 */
-	printf("parent pid = %d", getppid());
+	printf("parent pid = %d\n", getppid());
 
 	setbuf(stdout, NULL);
 
