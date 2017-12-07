@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
 	/* 安装信号处理器 */
 	sigemptyset(&sa.sa_mask);
-	sa.flags = 0;
+	sa.sa_flags = 0;
 	sa.sa_handler = sigchldHandle;
 	if (sigaction(SIGCHLD, &sa, NULL) == -1) {
 		errExit("sigaction failed \n");
