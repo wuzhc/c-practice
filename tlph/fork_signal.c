@@ -9,8 +9,8 @@ void sigchldHandle(int sig)
 
 int main(int argc, char *argv[])
 {
-	pid_t pid;
-	int i;
+	pid_t pid, childPid;
+	int i, total;
 	struct sigaction sa;
 
 	/* 安装信号处理器 */
@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
 
 	/* 创建子进程 */
 	printf("parent pid = %d", getppid());
+
+	setbuf(stdout, NULL);
 
 	for (i=0; i<5; i++) {
 		switch(pid = fork()){
@@ -38,5 +40,19 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	return 0;
+	total = 0;
+	for (;;) {
+		childPid = wait(NULL);
+		if (childPid == -1) {
+			if (errno == ECHLD) {
+				printf("no more children - bye\n");
+			} else {
+				errExit("wait failed");
+			}
+		}
+		total++;
+	}
+
+	printf("%d child process exit\n", total);
+	exit(EXIT_SUCCESS);
 }
