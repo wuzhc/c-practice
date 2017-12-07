@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 		if (childPid == -1) {
 			if (errno == ECHILD) {
 				printf("no more children - bye\n");
+				break;
 			} else {
 				errExit("wait failed");
 			}
