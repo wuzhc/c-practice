@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include "tlpi_hdr.h"
 
-#define KEY_FILE "/some-path/some-file"
+#define KEY_FILE "/home/wuzhc/c-practice/tlph/svmsg"
 
 int main(int argc, char *argv[])
 {
