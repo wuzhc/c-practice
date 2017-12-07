@@ -56,11 +56,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (optind < 1) {
+	if (optind < 2) { /* 无论如何，optind会读取程序名依次 */
 		usageError(argv[0], "Exactly one of the options must be supplied");
-	} else {
-		printf("optind=%d argc=%d\n", optind, argc);
-		exit(EXIT_FAILURE);
 	}
 
 	if (optind == argc) {
