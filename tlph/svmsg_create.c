@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	while ((ch=getopt(argc, argv, "cxf:k:p")) != EOF) {
 		switch (ch) {
 			case 'c':
-				flags |= IPC_CREATE;
+				flags |= IPC_CREAT;
 				break;
 			case 'x':
 				flags |= IPC_EXCL;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case 'k':
-				if (sscanf(optag, "%li", &lkey) != 1) {
+				if (sscanf(optarg, "%li", &lkey) != 1) {
 					cmdLineErr("-k option require a numeric argument \n");
 				}
 				key = lkey;
