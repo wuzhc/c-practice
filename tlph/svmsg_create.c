@@ -71,6 +71,6 @@ int main(int argc, char *argv[])
 		errExit("msgget failed \n");
 	}
 
-	printf("%d", msqid);
+	printf("%d \n", msqid);
 	exit(EXIT_SUCCESS);
 }
