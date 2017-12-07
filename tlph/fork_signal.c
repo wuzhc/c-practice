@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 				errExit("fork failed \n");
 				break;
 			case 0:
-				printf("child pid = %d\n", getppid());
+				printf("child pid = %d\n", getpid());
 				_exit(EXIT_SUCCESS);
 				break;
 			default:
