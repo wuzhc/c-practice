@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 
 	type = 0;
 	flags = 0;
-	while ((ch=getopt(argc, argv, "t:enx")) != -1) {
-		switch (ch) {
+	while ((opt=getopt(argc, argv, "t:enx")) != -1) {
+		switch (opt) {
 			case 't':
 				type = atoi(optarg);
 				break;
