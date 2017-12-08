@@ -14,11 +14,11 @@ void usageError(const char *progName, const char *msg)
 		fprintf(stderr, "%s\n", msg);
 	}
 	fprintf(stderr, "Usage: %s [-n] msqid msg-type [msg-text]\n", progName);
-	fprintf(stderr, "		-n Use IPC_NOWAIT flag \n", ); /* IPC_NOWAIT 非阻塞发送操作 */
+	fprintf(stderr, "		-n Use IPC_NOWAIT flag \n"); /* IPC_NOWAIT 非阻塞发送操作 */
 	exit(EXIT_FAILURE);
 }
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
 	struct mbuf msg;
 	char opt;
