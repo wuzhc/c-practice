@@ -47,7 +47,7 @@ int main(int argc, char *argv)
 		if (msgLen > MAX_MTEXT) {
 			cmdLineErr("msg-text too long (max: %d characters)\n", MAX_MTEXT);
 		}
-		memcpy(msg.text, argv[optind+2], msgLen);
+		memcpy(msg.mtext, argv[optind+2], msgLen);
 	} else {
 		msgLen = 0;
 	}
