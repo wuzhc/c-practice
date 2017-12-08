@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 {
 	struct mbuf msg;  /* message buffer for msgrcv */
 	int msqid, flags, type;
-	ssize_t maxLen;
+	ssize_t msgLen;
 	size_t maxBytes;
 	char opt;
 
