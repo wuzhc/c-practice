@@ -3,4 +3,4 @@
 #include "tlpi_hdr.h"
 
 #define SV_SOCK_PATH "/tmp/us_xfr"
-#define BUF_SIZE 100
+#define BUF_SIZE 1024

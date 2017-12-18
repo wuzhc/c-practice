@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 		errExit("connect failed\n");
 	}
 
-	while (numRead = read(STDIN_FILENO, buf, BUF_SIZE) > 0) {
+	while ((numRead = read(STDIN_FILENO, buf, BUF_SIZE)) > 0) {
 		if (write(sfd, buf, numRead) != numRead) {
 			errExit("partial write \n");
 		}

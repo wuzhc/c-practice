@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 			errExit("accept failed \n");
 		}
 
-		while (numRead = read(cfd, buf, BUF_SIZE) > 0) {
+		while ((numRead = read(cfd, buf, BUF_SIZE)) > 0) {
 			if (write(STDOUT_FILENO, buf, numRead) != numRead) {
 				fatal("partial/failed write \n");
 			}
